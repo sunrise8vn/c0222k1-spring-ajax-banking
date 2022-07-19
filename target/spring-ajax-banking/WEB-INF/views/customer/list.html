@@ -44,7 +44,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr id="tr_1">
                         <td></td>
                         <td>1</td>
                         <td>NVA</td>
@@ -61,8 +61,15 @@
 
         </div>
     </div>
+    <!-- End .container -->
+
+    <div class="footer"></div>
+
+    <th:block th:replace="/customer/footer :: footer" />
 
     <th:block th:replace="/customer/modal_create :: modal_create" />
+
+    <th:block th:replace="/customer/modal_deposit :: modal_deposit" />
 
 
     <th:block th:replace="/layout/script :: script" />
@@ -71,6 +78,7 @@
 
         let locationRegion = new LocationRegion();
         let customer = new Customer();
+        let customerId = null;
 
         $('.create-modal').on('click', () => {
             $('#modalCreateCustomer').modal('show');
@@ -148,6 +156,20 @@
             });
         });
 
+        function handleShowFooter() {
+            $("#tbListCustomers tbody tr").on('click', function () {
+                customerId = $(this).attr('id').replace('tr_', '');
+
+                let tempFooter = $.validator.format($.trim($('#tempFooter').val().toString()));
+
+                $('.footer').html(tempFooter);
+
+                handleShowDeposit();
+            });
+        }
+
+        handleShowFooter();
+
         $('#btnCreateCustomer').on('click', () => {
             locationRegion.provinceId = $('#province').val();
             locationRegion.provinceName = $('#province').text();
@@ -179,6 +201,34 @@
 
         })
 
+        $('#btnDepositMoney').on('click', () => {
+
+        })
+
+        function handleShowDeposit() {
+            $('button.deposit').on('click', () => {
+
+                $.ajax({
+                    "headers": {
+                        "accept": "application/json",
+                        "content-type": "application/json"
+                    },
+                    "type": "GET",
+                    "url": "http://localhost:8089/api/customers/" + customerId
+                })
+                .done((data) => {
+                    customer = data;
+                    $('#customerIdDep').val(customer.id);
+                    $('#fullNameDep').val(customer.fullName);
+                    $('#balanceDep').val(customer.balance);
+                    $('#modalDeposit').modal('show');
+                })
+                .fail((jqXHR) => {
+                    App.SweetAlert.showErrorAlert(jqXHR.responseJSON.message);
+                    console.log(jqXHR);
+                })
+            });
+        }
 
     </script>
 </body>

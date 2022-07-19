@@ -1,6 +1,8 @@
 package com.cg.model;
 
+import com.cg.model.dto.LocationRegionDTO;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
@@ -10,6 +12,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "location_region")
+@Accessors(chain = true)
 public class LocationRegion extends BaseEntities {
 
     @Id
@@ -38,5 +41,17 @@ public class LocationRegion extends BaseEntities {
 
     @OneToOne(mappedBy = "locationRegion")
     private Customer customer;
+
+    public LocationRegionDTO toLocationRegionDTO() {
+        return new LocationRegionDTO()
+                .setId(id)
+                .setProvinceId(provinceId)
+                .setProvinceName(provinceName)
+                .setDistrictId(districtId)
+                .setDistrictName(districtName)
+                .setWardId(wardId)
+                .setWardName(wardName)
+                .setAddress(address);
+    }
 
 }
