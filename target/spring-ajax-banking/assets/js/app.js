@@ -19,6 +19,28 @@ class App {
             })
         }
     }
+
+    static IziToast = class  {
+        static showErrorAlert(m) {
+            iziToast.error({
+                title: 'Error',
+                message: m,
+            });
+        }
+    }
+
+    static formatNumber() {
+        $(".num-space").number(true, 0, ',', ' ');
+        $(".num-point").number(true, 0, ',', '.');
+        $(".num-comma").number(true, 0, ',', ',');
+    }
+
+    static formatNumberSpace(x) {
+        if (x == null) {
+            return x;
+        }
+        return x.toString().replace(/ /g, "").replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
 }
 
 class LocationRegion {
@@ -45,10 +67,47 @@ class Customer {
     }
 }
 
+class Sender extends Customer {
+    constructor(id, fullName, email, phone, locationRegion, balance) {
+        super();
+    }
+}
+
+class Recipient extends Customer {
+    constructor(id, fullName, email, phone, locationRegion, balance) {
+        super();
+    }
+}
+
 class Deposit {
     constructor(id, customerId, transactionAmount) {
         this.id = id;
         this.customerId = customerId;
+        this.transactionAmount = transactionAmount;
+    }
+}
+
+class Transfer {
+    constructor(id, senderId, recipientId, transferAmount) {
+        this.id = id;
+        this.senderId = senderId;
+        this.recipientId = recipientId;
+        this.transferAmount = transferAmount;
+    }
+}
+
+class TransferHistory {
+    constructor(id, senderId, senderName, recipientId, recipientName, createdOn, createdAt, transferAmount, fees, feesAmount, transactionAmount) {
+        this.id = id;
+        this.senderId = senderId;
+        this.senderName = senderName;
+        this.recipientId = recipientId;
+        this.recipientName = recipientName;
+        this.createdOn = createdOn;
+        this.createdAt = createdAt;
+        this.transferAmount = transferAmount;
+        this.fees = fees;
+        this.feesAmount = feesAmount;
         this.transactionAmount = transactionAmount;
     }
 }

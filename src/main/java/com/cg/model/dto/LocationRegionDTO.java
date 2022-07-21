@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,6 +24,8 @@ public class LocationRegionDTO {
     private String districtName;
     private String wardId;
     private String wardName;
+
+    @NotBlank(message = "Address is not blank")
     private String address;
 
     public LocationRegion toLocationRegion() {
